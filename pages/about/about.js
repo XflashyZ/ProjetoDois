@@ -1,5 +1,5 @@
 $(document).ready(runPage);
 
 function runPage() {
-    console.log('Executando a Home');    
+    console.log('Executando a About');    
 }
