@@ -14,35 +14,22 @@ function runApp() {
 // Carrega uma página completa
 function loadPage(pagePath, pageName = '') {
 
-    // Caminho da rota
-    var path;
+    // Variáveis da função
+    var path, pageCSS, pageHTML, pageJS;
 
-    // Detecta variáveis
+    // Divide rota em partes
     var parts = pagePath.split('/');
 
-    // Monta caminho da página
-    if (parts.length !== 1)
-        
+    console.log(parts);
 
+    if (parts.length == 1) {
+        pageHTML = `/pages/${parts[0]}/${parts[0]}.html`;
+    } else {
+        pageHTML = `/pages/${parts[0]}/${parts[0]}.html?${parts[1]}`;
+    }
 
+    
 
-
-        path = `/pages/${parts[0]}/${parts[0]}/${parts[1]}`;
-    else
-        path = `/pages/${pagePath}/${pagePath}`;
-
-    // Carrega CSS da página
-    $('#pageCSS').load(`${path}.css`, () => {
-
-        // Carrega HTML da página
-        $('#pageHTML').load(`${path}.html`, () => {
-
-            // Carrega e executa JavaScript da página
-            $.getScript(`${path}.js`, () => {
-                $('title').text(`ProjetoDois - ${pageName}`);
-            });
-        });
-    });
 }
 
 // Roteamento de links
