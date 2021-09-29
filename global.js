@@ -4,7 +4,7 @@ $(document).ready(runApp);
 function runApp() {
 
     // Carrega página inicial
-    loadPage('home', 'Página inicial');
+    loadPage('home');
 
     // Monitora cliques nos links
     $(document).on('click', 'a', routerLink);
@@ -30,6 +30,7 @@ function routerLink() {
     console.log(href, target);
 
     // Resolver âncoras
+    
 
     if (target == '_blank') {
         window.open(href);
