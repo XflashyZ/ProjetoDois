@@ -15,20 +15,31 @@ function runApp() {
 function loadPage(pagePath, pageName = '') {
 
     // Variáveis da função
-    var path, pageCSS, pageHTML, pageJS;
+    var path, page = {};
 
     // Divide rota em partes
     var parts = pagePath.split('/');
 
-    console.log(parts);
-
+    // Gera rota para HTML
     if (parts.length == 1) {
-        pageHTML = `/pages/${parts[0]}/${parts[0]}.html`;
+        page.html = `/pages/${parts[0]}/${parts[0]}.html`;
     } else {
-        pageHTML = `/pages/${parts[0]}/${parts[0]}.html?${parts[1]}`;
+        page.html = `/pages/${parts[0]}/${parts[0]}.html?${parts[1]}`;
     }
 
-    
+    // Gera rotas para CSS e JS
+    page.css = `/pages/${parts[0]}/${parts[0]}.css`;
+    page.js = `/pages/${parts[0]}/${parts[0]}.js`;
+
+    $('#pageCSS').load(page.css, () => {
+        $('#pageHTML').load(page.html, () => {
+            $.getScript(page.js, () => {
+                if (pageName == '') page.title = 'ProjetoDois';
+                else page.title = `ProjetoDois - ${pageName}`;
+                $('title').text(page.title);
+            });
+        });
+    });
 
 }
 
