@@ -41,12 +41,32 @@ body {
 
 /* Páginas */
 
-article {
-    background: white;
+article, aside {
+    background: rgba(255, 255, 255, .9);
     border: 3px double grey;
     margin: .25rem;
     border-radius: .4rem;
-    padding: 0 1rem;
+    padding: .5rem;
+    flex-grow: 1;
+}
+
+article *:first-child {
+    margin-top: 0;
+}
+
+aside {
+    margin-top: .5rem;
+}
+
+@media (min-width: 768px) {
+    #pageHTML {
+        display: flex;
+    }
+    aside {
+        margin-top: .25rem;
+        min-width: 200px;
+        max-width: 200px;
+    }
 }
 
 /* Estilos de uso geral */
@@ -71,7 +91,7 @@ img.fluid {
     flex-direction: column;
 }
 
-/* Cabeçalho */ 
+/* Cabeçalho */
 
 header {
     display: flex;
