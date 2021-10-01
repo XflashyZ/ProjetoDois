@@ -38,16 +38,19 @@ function runApp() {
 function loadPage(pagePath, pageName = '') {
 
     // Variáveis da função
-    var path, page = {};
+    var page = {};
 
     // Divide a rota em partes
-    var parts = pagePath.split('/');
+    var parts = pagePath.split('?');
 
     // Gera rota para HTML
-    if (parts.length == 1)
+    if (parts.length == 1) {
         page.html = `/pages/${parts[0]}/${parts[0]}.html`;
-    else
+        page.url = `/${parts[0]}`;
+    } else {
         page.html = `/pages/${parts[0]}/${parts[0]}.html?${parts[1]}`;
+        page.url = `/${parts[0]}?${parts[1]}`;
+    }
 
     // Gera rotas para CSS e JS
     page.css = `/pages/${parts[0]}/${parts[0]}.css`;
@@ -56,7 +59,11 @@ function loadPage(pagePath, pageName = '') {
     // Carrega componentes da página
     $('#pageCSS').load(page.css, () => {
         $('#pageHTML').load(page.html, () => {
-            $.getScript(page.js);
+            $.getScript(page.js, () => {
+
+                // Atualiza URL da aplicação
+                window.history.replaceState('', '', page.url);
+            });
         });
     });
 }
@@ -69,14 +76,16 @@ function routerLink() {
     var target = $(this).attr('target');
 
     // Resolver âncoras
-    if (href.substr(0, 1) == '#') {
-        return true;
-    }
+    if (href.substr(0, 1) == '#')           // Se o primeiro caractere é '#'
+        return true;                        // Devolve controle para o HTML
 
-    // Resolver links externos
-    if (target == '_blank' || href.substr(0, 7) == 'http://' || href.substr(0, 8) == 'https://') {
-        return true;
-    }
+
+    // É um link externo...
+    if (
+        target == '_blank'                  // ... se target="_blank"
+        || href.substr(0, 7) == 'http://'   // ou, se começa com http://
+        || href.substr(0, 8) == 'https://'  // ou, se começa com https://
+    ) return true;                          // Devolve controle para o HTML
 
     // Resolver links internos (rotas)
     loadPage(href);
@@ -85,17 +94,10 @@ function routerLink() {
     return false;
 }
 
-// Processa título da página <title>
-function setTitle(pageTitle) {
-
-    // Inicializa variável
-    var title;
-
-    if (pageTitle == '')
-        title = siteName;
-    else
-        title = `${siteName} .:. ${pageTitle}`;
-
-    // Escreve na tag <title>
-    $('title').text(title);
+// Processa título da página. Tag <title>...</title>
+function setTitle(pageTitle = '') {
+    var title;                                      // Inicializa variável
+    if (pageTitle == '') title = siteName;          // Se não definiu um título, usa o nome do app
+    else title = `${siteName} .:. ${pageTitle}`;    // Senão, usa este formato
+    $('title').text(title);                         // Escreve na tag <title>
 }
