@@ -38,15 +38,18 @@
 
 @media (min-width: 576px) {
   .card {
-    display: flex;
+    display: grid;
+    grid-template-columns: 80px auto;
   }
+
   .card-img {
-    width: 80px;
-    height: 80px;
+    height: auto;
+    min-height: 80px;
     border: 1px solid grey;
     border-right: none;
     border-radius: 0.3rem 0 0 0.3rem;
   }
+
   .card-content {
     flex-grow: 1;
     border: 1px solid grey;

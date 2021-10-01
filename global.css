@@ -79,12 +79,24 @@ aside {
 
 /* Estilos de uso geral */
 
-p.center {
+.text-center {
   text-align: center;
 }
 
-img.fluid {
+.text-right {
+  text-align: right;
+}
+
+.fluid {
   max-width: 100%;
+}
+
+.block {
+  display: block;
+}
+
+.margin-bottom {
+  margin-bottom: 1rem;
 }
 
 /* Tema */
