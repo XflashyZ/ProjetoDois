@@ -46,59 +46,6 @@ body {
   background-size: cover;
 }
 
-/* Páginas */
-
-article,
-aside {
-  background: rgba(255, 255, 255, 0.9);
-  border: 3px double grey;
-  margin: 0.25rem;
-  border-radius: 0.4rem;
-  padding: 0.5rem;
-  flex-grow: 1;
-}
-
-article *:first-child {
-  margin-top: 0;
-}
-
-aside {
-  margin-top: 0.5rem;
-}
-
-@media (min-width: 768px) {
-  #pageHTML {
-    display: flex;
-  }
-  aside {
-    margin-top: 0.25rem;
-    min-width: 200px;
-    max-width: 200px;
-  }
-}
-
-/* Estilos de uso geral */
-
-.text-center {
-  text-align: center;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.fluid {
-  max-width: 100%;
-}
-
-.block {
-  display: block;
-}
-
-.margin-bottom {
-  margin-bottom: 1rem;
-}
-
 /* Tema */
 
 .wrap {
@@ -258,4 +205,59 @@ footer .botton div a:hover {
 footer .botton div i {
   font-size: 1.4rem;
   margin-right: 0.25rem;
+}
+
+/* Páginas */
+
+article,
+aside {
+  background: rgba(255, 255, 255, 0.9);
+  border: 3px double grey;
+  margin: 0.25rem;
+  border-radius: 0.4rem;
+  padding: 0.5rem;
+  flex-grow: 1;
+  position: relative;
+  height: 100%;
+}
+
+article *:first-child {
+  margin-top: 0;
+}
+
+aside {
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  #pageHTML {
+    display: flex;
+  }
+  aside {
+    margin-top: 0.25rem;
+    min-width: 200px;
+    max-width: 200px;
+  }
+}
+
+/* Estilos de uso geral */
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.fluid {
+  max-width: 100%;
+}
+
+.block {
+  display: block;
+}
+
+.margin-bottom {
+  margin-bottom: 1rem;
 }
