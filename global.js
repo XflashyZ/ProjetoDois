@@ -117,6 +117,9 @@ function login() {
             $('#modalLogin .modal-title').html('Bem-vinda(o)!');
             $('#modalLogin .modal-text').html(modalText);
             $('#modalLogin').show('fast');
+            setTimeout(() => {
+                $('#modalLogin').hide('fast');
+            }, 15000);
         }).catch((error) => {
             console.error(`Ocorreram erros ao fazer login: ${error}`);
         });
@@ -124,6 +127,6 @@ function login() {
 
 // Fecha modal
 function closeModal() {
-    parent = '#' + $(this).parent().attr('id');
-    $(parent).hide('fast');
+    modalName = $(this).parent().attr('id');
+    $(`#${modalName}`).hide('fast');
 }
