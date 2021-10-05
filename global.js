@@ -7,7 +7,8 @@ $(document).ready(runApp); // Quando documento estiver pronto, executa aplicativ
 /***** Aplicativo principal *****/
 function runApp() {
 
-    loadPage('home'); // Carrega página inicial
+    loadPage('logout'); // Carrega página inicial
+
     $(document).on('click', '#login', login); // Monitora cliques no login
     $(document).on('click', 'a', routerLink); // Monitora cliques nos links
     $(document).on('click', '.modal', closeModal); // Monitora cliques no modal
@@ -16,9 +17,10 @@ function runApp() {
     firebase.auth().onAuthStateChanged((userData) => {
         if (userData) {
             user = userData
-            console.log(user);
-        } else {
-            console.log('Não logado');
+            $('#login').attr('href', 'profile');
+            $('#login').attr('title', user.displayName);
+            $('#login').html(`<img src="${user.photoURL}" alt="${user.displayName}"><span>Perfil</span>`);
+            $('#login').attr('id', 'profile');
         }
     });
 }
@@ -57,8 +59,7 @@ function routerLink() {
     var href = $(this).attr('href'); // Obtém valor de 'href' do link clicado
     var target = $(this).attr('target'); // Obtém valor de 'target' do link clicado
 
-    // Bloqueia link de login
-    if (href == 'login') return false
+    if (!href) return false
 
     // Resolver âncoras
     if (href.substr(0, 1) == '#') // Se o primeiro caractere é '#', é uma âncora
@@ -107,6 +108,8 @@ function getSystemDate() {
 
 // Faz login de usuário
 function login() {
+
+    logout();
 
     var provider = new firebase.auth.GoogleAuthProvider();
 

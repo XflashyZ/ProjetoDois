@@ -323,3 +323,65 @@ footer .botton div i {
 #modalLogin {
   display: none;
 }
+
+/* Cards */
+
+.card {
+  border-radius: 0.3rem;
+  border: 1px solid grey;
+}
+
+.card-table {
+  display: table;
+  margin: auto;
+  width: 100%;
+  max-width: 400px;
+}
+
+.card-img {
+  text-align: center;
+  padding: 0.25rem;
+}
+
+.card-img img {
+  border-radius: 50%;
+}
+
+.card-content {
+  padding: 0 1rem;
+}
+
+.card-content h3,
+.card-content h4 {
+  margin: 0.5rem 0 0 0;
+}
+
+.card-content h4 {
+  color: rgb(82, 82, 82);
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  text-align: center;
+}
+
+.primary {
+  background: steelblue;
+  color: white;
+}
+
+.primary:hover {
+  background: rgb(26, 62, 92);
+  color: white;
+}
+
+.warning {
+  background: orangered;
+  color: white;
+}
+
+.warning:hover {
+  background: rgb(104, 28, 0);
+  color: white;
+}
