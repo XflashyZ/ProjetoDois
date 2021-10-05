@@ -1,19 +1,6 @@
 <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
-<script>
-    // Troque pelas configurações do seu Firebase.com
-    var firebaseConfig = {
-        apiKey: "AIzaSyBfWBlHOfE7N3J6K_swDzi2Zz6nSWfjd_4",
-        authDomain: "projetoum-fe477.firebaseapp.com",
-        projectId: "projetoum-fe477",
-        storageBucket: "projetoum-fe477.appspot.com",
-        messagingSenderId: "746077889552",
-        appId: "1:746077889552:web:f6c520f9f6e1983b849695"
-    };
-    firebase.initializeApp(firebaseConfig);
-    var db = firebase.firestore();
-
-</script>
+<script src="../fb.js"></script>
 <script>
     db.collection('articles').add({
 
