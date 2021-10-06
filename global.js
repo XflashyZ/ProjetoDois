@@ -12,7 +12,7 @@ function runApp() {
   $(document).on("click", "a", routerLink); // Monitora cliques nos links
   $(document).on("click", ".modal", closeModal); // Monitora cliques no modal
 
-  // Se alguém fizer login/logout...
+  // Se alguém fizer login/logout (observer)...
   firebase.auth().onAuthStateChanged((userData) => {
     if (userData) {
       // Se tem usuário logado
