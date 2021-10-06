@@ -1,166 +1,108 @@
-$(document).ready(runPage);
+$(document).ready(() => {
 
-// Formulário de comentário
-var commentForm = `
-<form id="cForm" name="comment-form">
-    <textarea id="commentText" placeholder="Comente aqui..."></textarea>
-    <p>
-        <button type="submit" class="btn primary" id="commentSend" title="Enviar comentário">Enviar</button>
-        <small class="grey">Suporta somente texto.</small>
-    </p>
-</form>
-`;
+    var id = location.search.replace('?', '');
 
-// Dados do usuário comentarista
-var commentUser = {};
+    showArticle(id);
 
-// Id do artigo sendo comentado
-var commentArticle;
+    showCommentForm(id);
 
-// Mensagem para quem não está logado
-var commentMsg = `<blockquote>Logue-se para comentar!</blockquote>`;
+    showComments(id);
 
-function runPage() {
+});
 
-    // Obtém o ID do artigo da URL
-    const id = location.search.replace('?', '');
-
-    // Obtém o artigo do banco de dados
-    db.collection('articles')                       // Consulta coleção 'articles'
-        .doc(id)                                    // ID do artigo a ser obtido
-        .onSnapshot((doc) => {                      // Pull do artigo
-            if (doc.exists) {                       // Se artigo existe
-                var art = doc.data();               // Importa dados em 'art'
-                art.brDate = getBrDate(art.date);   // Converte a data do artigo em pt-br
-                setTitle(art.title);                // Altera o título da página
-
-                // Torna o id do artigo global
-                commentArticle = doc.id;
-
-                // Montando a 'view' do artigo.
-                var artView = `
+function showArticle(id) {
+    db.collection('articles').doc(id).get().then((doc) => {
+        if (doc.exists) {
+            art = doc.data();
+            var artView = `
 <h2>${art.title}</h2>                
 <small class="block text-right margin-bottom"><em>Em ${art.brDate}.</em></small>
-<div class="art-body">${art.text}</div>`;
-
-                $('#artView').html(artView);        // Atualiza a 'view' o artigo
-
-                /***** Comentários *****/
-                // Monitora autenticação de usuário (observer)
-                firebase.auth().onAuthStateChanged((userData) => {
-
-                    // Usuário logado
-                    if (userData) {
-
-                        // Exporta dados do usuário
-                        commentUser = userData;
-
-                        // Exibe formulário
-                        $('#commentForm').html(commentForm);
-
-                        // Monitora envio do formulário
-                        $(document).on('submit', '#cForm', sendComment);
-
-                    } else {
-
-                        // Mensagem pedindo para logar
-                        $('#commentForm').html(commentMsg);
-                    }
-                });
-
-                // Exibe comentários deste artigo
-                showComments(doc.id);
-
-            } else {                                // Se não tem artigo
-                loadPage('home');                   // Volta para página de artigos
-            }
-        });
-}
-
-// Processa envio do formulário
-function sendComment() {
-
-    console.log('salvando');
-
-    // Obtém comentário digitado e sanitiza
-    var commentText = sanitizeString($('#commentText').val());
-
-    // Monta documento para o banco de dados
-    var commentData = {
-        article: commentArticle,                // Id do artigo que esta sendo comentado
-        displayName: commentUser.displayName,   // Nome do comentarista
-        email: commentUser.email,               // E-mail do comentarista
-        photoURL: commentUser.photoURL,         // Foto do comentarista
-        uid: commentUser.uid,                   // Id do comentarista
-        date: getSystemDate(),                  // Data do comentário em 'system date'
-        comment: commentText,                   // Comentário enviado
-        status: 'ativo'                         // Se usar pré-moderação escreva 'inativo'
-    };
-
-    // Salva no database
-    db.collection('comments').add(commentData)
-        .then(() => {
-
-            // Se deu certo, exibe 'modal'
-            $('#modalComment').show('fast');
-
-            //  Limpa campo de comentário
-            $('#commentText').val('');
-
-            // Fecha o modal em 15 segundos (15000 ms)
-            setTimeout(() => {
-                $("#modalComment").hide('fast');
-            }, 15000);
-        })
-        .catch((error) => {
-
-            // Se deu errado, exibe mensagem de erro no console
-            console.error(`Ocorreu erro ao salvar no DB: ${error}`);
-        });
-
-    // Conclui sem fazer mais nada
+<div class="art-body">${art.text}</div>
+            `;
+            $('#artView').html(artView);
+        } else {
+            loadPage('home');
+        }
+    });
     return false;
 }
 
-// Exibe comentários deste artigo
-function showComments(articleId) {
 
+function showCommentForm(id) {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+
+            $('#commentForm').html(`
+<form id="cForm" name="comment-form">
+    <input type="hidden" name="article" id="commentArticle" value="${id}">
+    <textarea id="commentText" placeholder="Comente aqui..."></textarea>
+    <p>
+        <button type="button" class="btn primary" id="commentSend" title="Enviar comentário">Enviar</button>
+        <small class="grey">Suporta somente texto.</small>
+    </p>
+</form>
+            `);
+
+            $('#commentSend').click(commentSend);
+
+        } else {
+            $('#commentForm').html(`<blockquote>Logue-se para comentar!</blockquote>`);
+        }
+    });
+}
+
+
+function showComments(id) {
     db.collection('comments')
-    .where('article', '==', articleId)
-    .where('status', '==', 'ativo')
-    .orderBy('date', 'desc')
-    .onSnapshot((querySnapshot) => {
+        .where('article', '==', id)
+        .where('status', '==', 'ativo')
+        .orderBy('date', 'desc')
+        .onSnapshot((snapshot) => {
+            commentList = '';
 
-        // Inicializa lista de artigos
-        var commentList = '';
+            console.log(snapshot.length)
 
-        // Obtém um artigo por loop
-        querySnapshot.forEach((doc) => {
-
-            // Armazena dados do artigo em 'cData'
-            cData = doc.data();
-
-            // Primeiro nome do usuário
-            firstName = cData.displayName.split(' ');
-
-            // Formata a date
-            brDate = getBrDate(cData.date);
-
-            // Monta lista de artigos
-            commentList += `
+            snapshot.forEach((doc) => {
+                item = doc.data();
+                item.name = item.displayName.split(' ')[0];
+                item.brDate = getBrDate(item.date);
+                commentList += `
 <div class="comment-item">
     <div class="comment-autor-date">
-        <img class="comment-image" src="${cData.photoURL}" alt="${cData.displayName}">
-        <span>Por ${firstName[0]} em ${brDate}.</span>
+        <img class="comment-image" src="${item.photoURL}" alt="${item.displayName}">
+        <span>Por ${item.name} em ${item.brDate}.</span>
     </div>
-    <div class="comment-text">${cData.comment}</div>
+    <div class="comment-text">${item.comment}</div>
 </div>
-            `;
+  `;
+            });
+            $('#commentList').html(commentList);
         });
+}
 
-        // Atualiza a view com a lista de artigos
-        $('#commentList').html(commentList);
-        commentList = '';
-    });
 
+function commentSend() {
+    var article = sanitizeString($('#commentArticle').val());
+    var comment = sanitizeString($('#commentText').val());
+    if (comment.length < 5) return false;
+    var commentData = {
+        article: article,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        uid: user.uid,
+        date: getSystemDate(),
+        comment: comment,
+        status: 'ativo'
+    };
+
+    console.log(commentData)
+    db.collection('comments').add(commentData)
+        .then((docRef) => {
+            if (docRef.id) {
+                console.log(docRef.id);
+            }
+            return false;
+        })
+        .catch((error) => { console.error(error); });
 }

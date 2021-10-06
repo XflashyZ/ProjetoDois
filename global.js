@@ -177,3 +177,100 @@ function sanitizeString(stringValue, stripTags = true) {
   if (stripTags) stringValue = stringValue.replace(/<[^>]*>?/gm, ""); // Remove todas as tags HTML
   return stringValue.replace(/\n/g, "<br />").trim(); // Quebras de linha viram <br>
 }
+
+
+
+
+
+
+
+
+
+// Processa envio do formulário
+function sendComment() {
+
+  console.log('salvando');
+
+  // Obtém comentário digitado e sanitiza
+  var commentText = sanitizeString($('#commentText').val());
+
+  // Monta documento para o banco de dados
+  var commentData = {
+    article: commentArticle,                // Id do artigo que esta sendo comentado
+    displayName: commentUser.displayName,   // Nome do comentarista
+    email: commentUser.email,               // E-mail do comentarista
+    photoURL: commentUser.photoURL,         // Foto do comentarista
+    uid: commentUser.uid,                   // Id do comentarista
+    date: getSystemDate(),                  // Data do comentário em 'system date'
+    comment: commentText,                   // Comentário enviado
+    status: 'ativo'                         // Se usar pré-moderação escreva 'inativo'
+  };
+
+  // Salva no database
+  db.collection('comments').add(commentData)
+    .then(() => {
+
+      // Se deu certo, exibe 'modal'
+      $('#modalComment').show('fast');
+
+      //  Limpa campo de comentário
+      $('#commentText').val('');
+
+      // Fecha o modal em 15 segundos (15000 ms)
+      setTimeout(() => {
+        $("#modalComment").hide('fast');
+      }, 15000);
+    })
+    .catch((error) => {
+
+      // Se deu errado, exibe mensagem de erro no console
+      console.error(`Ocorreu erro ao salvar no DB: ${error}`);
+    });
+
+  // Conclui sem fazer mais nada
+  return false;
+}
+
+
+// Exibe comentários deste artigo
+function showComments(articleId) {
+
+  db.collection('comments')
+    .where('article', '==', articleId)
+    .where('status', '==', 'ativo')
+    .orderBy('date', 'desc')
+    .onSnapshot((querySnapshot) => {
+
+      // Inicializa lista de artigos
+      var commentList = '';
+
+      // Obtém um artigo por loop
+      querySnapshot.forEach((doc) => {
+
+        // Armazena dados do artigo em 'cData'
+        cData = doc.data();
+
+        // Primeiro nome do usuário
+        firstName = cData.displayName.split(' ');
+
+        // Formata a date
+        brDate = getBrDate(cData.date);
+
+        // Monta lista de artigos
+        commentList += `
+<div class="comment-item">
+  <div class="comment-autor-date">
+      <img class="comment-image" src="${cData.photoURL}" alt="${cData.displayName}">
+      <span>Por ${firstName[0]} em ${brDate}.</span>
+  </div>
+  <div class="comment-text">${cData.comment}</div>
+</div>
+          `;
+      });
+
+      // Atualiza a view com a lista de artigos
+      $('#commentList').html(commentList);
+      commentList = '';
+    });
+
+}
