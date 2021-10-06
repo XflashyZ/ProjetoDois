@@ -171,6 +171,11 @@ nav a {
   align-items: center;
   justify-content: center;
   color: #eee;
+  height: 100%;
+}
+
+nav span {
+  display: block;
 }
 
 nav a:hover {
@@ -296,7 +301,7 @@ footer .botton div i {
   background: white;
   width: 100%;
   max-width: 400px;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   padding: 0.5rem;
   border: 3px double grey;
 }
@@ -364,6 +369,7 @@ footer .botton div i {
   padding: 0.5rem 1rem;
   border-radius: 0.3rem;
   text-align: center;
+  cursor: pointer;
 }
 
 .primary {

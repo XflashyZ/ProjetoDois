@@ -7,7 +7,4 @@ function runPage() {
 
     // Altera o título da página
     setTitle(pageTitle);
-
-    console.log('Executando a Sobre');
-
 }

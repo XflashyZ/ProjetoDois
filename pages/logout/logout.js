@@ -1,17 +1,17 @@
 // Define o título da página
-var pageTitle = 'Sobre...';
+var pageTitle = "Sobre...";
 
 $(document).ready(runPage);
 
 function runPage() {
+  // Altera o título da página
+  setTitle(pageTitle);
 
-    // Altera o título da página
-    setTitle(pageTitle);
+  $(document).on("click", "#logout", logout);
 
-    $(document).on('click', '#logout', runLogout);
-
-}
-
-function runLogout() {
-
+  firebase.auth().onAuthStateChanged((userData) => {
+    if (!userData) {
+      loadPage("home");
+    }
+  });
 }

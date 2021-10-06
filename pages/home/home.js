@@ -6,8 +6,8 @@ $(document).ready(runPage);
 // Aplicativo principal
 function runPage() {
 
-    // Detecta cliques nos cards
-    $(document).on('click', '.card', openArticle);
+    // Detecta cliques nos articles
+    $(document).on('click', '.article', openArticle);
 
     // Altera o título da página
     setTitle(pageTitle);
@@ -29,9 +29,9 @@ function runPage() {
 
                 // Monta lista de artigos
                 artList += `
-<div class="card" data-route="view?${doc.id}">
-    <div class="card-img" style="background-image: url('${art.img}')"></div>
-    <div class="card-content">
+<div class="article" data-route="view?${doc.id}">
+    <div class="article-img" style="background-image: url('${art.img}')"></div>
+    <div class="article-content">
         <h3>${art.title}</h3>
         ${art.intro}
     </div>
