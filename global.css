@@ -370,6 +370,9 @@ footer .botton div i {
   border-radius: 0.3rem;
   text-align: center;
   cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .primary {
@@ -390,4 +393,9 @@ footer .botton div i {
 .warning:hover {
   background: rgb(104, 28, 0);
   color: white;
+}
+
+.separator {
+  border: none;
+  border-bottom: 1px dotted grey;
 }

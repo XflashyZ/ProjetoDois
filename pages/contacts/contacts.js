@@ -58,8 +58,3 @@ function feedback(name, msg) {
   $("#contact").hide("fast"); // Oculta formulário
   $("#feedback").show("fast"); // Exibe mensagem
 }
-
-function sanitizeString(stringValue, stripTags = true) {
-  if (stripTags) stringValue = stringValue.replace(/<[^>]*>?/gm, ""); // Remove todas as tags HTML
-  return stringValue.replace(/\n/g, "<br />").trim(); // Quebras de linha viram <br>
-}

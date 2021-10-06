@@ -168,3 +168,9 @@ function logout() {
       loadPage("home");
     });
 }
+
+// Sanitiza campos de formulário
+function sanitizeString(stringValue, stripTags = true) {
+  if (stripTags) stringValue = stringValue.replace(/<[^>]*>?/gm, ""); // Remove todas as tags HTML
+  return stringValue.replace(/\n/g, "<br />").trim(); // Quebras de linha viram <br>
+}
