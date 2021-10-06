@@ -5,7 +5,7 @@ var commentForm = `
 <form id="cForm" name="comment-form">
     <textarea id="commentText" placeholder="Comente aqui..."></textarea>
     <p>
-        <button type="button" class="btn primary" id="commentSend" title="Enviar comentário" disabled="false">Enviar</button>
+        <button type="submit" class="btn primary" id="commentSend" title="Enviar comentário">Enviar</button>
         <small class="grey">Suporta somente texto.</small>
     </p>
 </form>
