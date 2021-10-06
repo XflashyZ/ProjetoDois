@@ -55,14 +55,17 @@ function loadPage(pagePath, pageName = "") {
   page.css = `/pages/${parts[0]}/${parts[0]}.css`;
   page.js = `/pages/${parts[0]}/${parts[0]}.js`;
 
-  // Carrega componentes da página
+  // Carrega CSS da página
   $("#pageCSS").load(page.css, () => {
-    // Carrega CSS
+
+    // Carrega HTML da página
     $("#pageHTML").load(page.html, () => {
-      // Carrega HTML
+
+      // Carrega e executa JavaScript
       $.getScript(page.js, () => {
-        // Carrega e executa JavaScript
-        window.history.replaceState("", "", page.url); // Atualiza URL da aplicação
+
+        // Atualiza URL da aplicação
+        window.history.replaceState("", "", page.url);
       });
     });
   });

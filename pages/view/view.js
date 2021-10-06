@@ -68,6 +68,9 @@ function runPage() {
                     }
                 });
 
+                // Exibe comentários deste artigo
+                showComments(doc.id);
+
             } else {                                // Se não tem artigo
                 loadPage('home');                   // Volta para página de artigos
             }
@@ -76,6 +79,8 @@ function runPage() {
 
 // Processa envio do formulário
 function sendComment() {
+
+    console.log('salvando');
 
     // Obtém comentário digitado e sanitiza
     var commentText = sanitizeString($('#commentText').val());
@@ -115,4 +120,47 @@ function sendComment() {
 
     // Conclui sem fazer mais nada
     return false;
+}
+
+// Exibe comentários deste artigo
+function showComments(articleId) {
+
+    db.collection('comments')
+    .where('article', '==', articleId)
+    .where('status', '==', 'ativo')
+    .orderBy('date', 'desc')
+    .onSnapshot((querySnapshot) => {
+
+        // Inicializa lista de artigos
+        var commentList = '';
+
+        // Obtém um artigo por loop
+        querySnapshot.forEach((doc) => {
+
+            // Armazena dados do artigo em 'cData'
+            cData = doc.data();
+
+            // Primeiro nome do usuário
+            firstName = cData.displayName.split(' ');
+
+            // Formata a date
+            brDate = getBrDate(cData.date);
+
+            // Monta lista de artigos
+            commentList += `
+<div class="comment-item">
+    <div class="comment-autor-date">
+        <img class="comment-image" src="${cData.photoURL}" alt="${cData.displayName}">
+        <span>Por ${firstName[0]} em ${brDate}.</span>
+    </div>
+    <div class="comment-text">${cData.comment}</div>
+</div>
+            `;
+        });
+
+        // Atualiza a view com a lista de artigos
+        $('#commentList').html(commentList);
+        commentList = '';
+    });
+
 }
