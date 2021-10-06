@@ -41,7 +41,8 @@ function runPage() {
                 var artView = `
 <h2>${art.title}</h2>                
 <small class="block text-right margin-bottom"><em>Em ${art.brDate}.</em></small>
-<div class="art-body">${art.text}</div>`;
+<div class="art-body">${art.text}</div>
+                `;
 
                 $('#artView').html(artView);        // Atualiza a 'view' o artigo
 
@@ -59,7 +60,7 @@ function runPage() {
                         $('#commentForm').html(commentForm);
 
                         // Monitora envio do formulário
-                        $(document).on('submit', '#cForm', sendComment);
+                        $('#commentSend').click(sendComment);
 
                     } else {
 
@@ -84,6 +85,9 @@ function sendComment() {
 
     // Obtém comentário digitado e sanitiza
     var commentText = sanitizeString($('#commentText').val());
+
+    // Se o comentário é muito curto, não envia
+    if (commentText.length < 5) return false;
 
     // Monta documento para o banco de dados
     var commentData = {
@@ -126,28 +130,28 @@ function sendComment() {
 function showComments(articleId) {
 
     db.collection('comments')
-    .where('article', '==', articleId)
-    .where('status', '==', 'ativo')
-    .orderBy('date', 'desc')
-    .onSnapshot((querySnapshot) => {
+        .where('article', '==', articleId)
+        .where('status', '==', 'ativo')
+        .orderBy('date', 'desc')
+        .onSnapshot((querySnapshot) => {
 
-        // Inicializa lista de artigos
-        var commentList = '';
+            // Inicializa lista de artigos
+            var commentList = '';
 
-        // Obtém um artigo por loop
-        querySnapshot.forEach((doc) => {
+            // Obtém um artigo por loop
+            querySnapshot.forEach((doc) => {
 
-            // Armazena dados do artigo em 'cData'
-            cData = doc.data();
+                // Armazena dados do artigo em 'cData'
+                cData = doc.data();
 
-            // Primeiro nome do usuário
-            firstName = cData.displayName.split(' ');
+                // Primeiro nome do usuário
+                firstName = cData.displayName.split(' ');
 
-            // Formata a date
-            brDate = getBrDate(cData.date);
+                // Formata a date
+                brDate = getBrDate(cData.date);
 
-            // Monta lista de artigos
-            commentList += `
+                // Monta lista de artigos
+                commentList += `
 <div class="comment-item">
     <div class="comment-autor-date">
         <img class="comment-image" src="${cData.photoURL}" alt="${cData.displayName}">
@@ -155,12 +159,12 @@ function showComments(articleId) {
     </div>
     <div class="comment-text">${cData.comment}</div>
 </div>
-            `;
-        });
+                `;
+            });
 
-        // Atualiza a view com a lista de artigos
-        $('#commentList').html(commentList);
-        commentList = '';
-    });
+            // Atualiza a view com a lista de artigos
+            $('#commentList').html(commentList);
+            commentList = '';
+        });
 
 }
