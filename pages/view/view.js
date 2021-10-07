@@ -145,17 +145,17 @@ function showComments(articleId) {
                 cData = doc.data();
 
                 // Primeiro nome do usuário
-                firstName = cData.displayName.split(' ');
+                cData.firstName = cData.displayName.split(' ')[0];
 
                 // Formata a date
-                brDate = getBrDate(cData.date);
+                cData.brDate = getBrDate(cData.date);
 
                 // Monta lista de artigos
                 commentList += `
 <div class="comment-item">
     <div class="comment-autor-date">
-        <img class="comment-image" src="${cData.photoURL}" alt="${cData.displayName}">
-        <span>Por ${firstName[0]} em ${brDate}.</span>
+        <!-- img class="comment-image" src="${cData.photoURL}" alt="${cData.displayName}" -->
+        <span>Por ${cData.firstName} em ${cData.brDate}.</span>
     </div>
     <div class="comment-text">${cData.comment}</div>
 </div>
