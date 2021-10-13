@@ -51,9 +51,9 @@ function loadPage(pagePath, pageName = "") {
   }
 
   // Gera caminhos para HTML, CSS e JS
-  page.html = `/pages/${parts[0]}/${parts[0]}.html`;
-  page.css = `/pages/${parts[0]}/${parts[0]}.css`;
-  page.js = `/pages/${parts[0]}/${parts[0]}.js`;
+  page.html = `pages/${parts[0]}/${parts[0]}.html`;
+  page.css = `pages/${parts[0]}/${parts[0]}.css`;
+  page.js = `pages/${parts[0]}/${parts[0]}.js`;
 
   // Carrega CSS da página
   $("#pageCSS").load(page.css, () => {
