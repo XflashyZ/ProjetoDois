@@ -44,10 +44,10 @@ function loadPage(pagePath, pageName = "") {
   // Gera endereço da página
   if (parts.length == 1) {
     // Se é uma rota simples
-    page.url = `/${parts[0]}`; // Define endereço da página
+    page.url = `${parts[0]}`; // Define endereço da página
   } else {
     // Se a rota contém variáveis (search) após '?'
-    page.url = `/${parts[0]}?${parts[1]}`; // Define endereço da página
+    page.url = `${parts[0]}?${parts[1]}`; // Define endereço da página
   }
 
   // Gera caminhos para HTML, CSS e JS
