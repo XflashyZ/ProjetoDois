@@ -39,7 +39,7 @@ p {
 
 body {
   background-color: black;
-  background-image: url("/img/background01.jpg");
+  background-image: url("img/background01.jpg");
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;

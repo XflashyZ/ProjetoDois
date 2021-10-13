@@ -30,7 +30,7 @@ function runApp() {
       // Atualiza view --> <nav>...</nav>
       $("#userInOut").html(`
 <a id="login" class="user-logo" title="Entrar / Login">
-  <img src="/img/user.png" alt="Logue-se!"><span>Entrar</span>
+  <img src="img/user.png" alt="Logue-se!"><span>Entrar</span>
 </a>`);
     }
   });
