@@ -60,7 +60,9 @@ function runPage() {
                         $('#commentForm').html(commentForm);
 
                         // Monitora envio do formulário
-                        $('#commentSend').click(sendComment);
+                        // (ERRO) $(document).on('submit', '#cForm', sendComment);
+                        // (1ª solução) $('#commentSend').click(sendComment);
+                        $('#cForm').submit(sendComment);
 
                     } else {
 
@@ -80,8 +82,6 @@ function runPage() {
 
 // Processa envio do formulário
 function sendComment() {
-
-    console.log('salvando');
 
     // Obtém comentário digitado e sanitiza
     var commentText = sanitizeString($('#commentText').val());

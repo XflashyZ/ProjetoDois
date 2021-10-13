@@ -7,7 +7,8 @@ function runPage() {
   setTitle(pageTitle); // Altera o título da página
 
   // Quando o formulário for enviado, executa 'sendForm'
-  $(document).on("submit", "#contact", sendForm); 
+  // (ERRO) $(document).on("submit", "#contact", sendForm); 
+  $('#contact').submit(sendForm);
 
   // Se alguém faz login/logout
   firebase.auth().onAuthStateChanged((userData) => {
